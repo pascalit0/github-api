@@ -1,8 +1,11 @@
 package com.pascalito.github.githubapi.client;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pascalito.github.githubapi.client.model.LanguageDTO;
+import com.pascalito.github.githubapi.client.model.RepoDTO;
+import com.pascalito.github.githubapi.client.model.UserDTO;
+import lombok.SneakyThrows;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -13,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class GitHubClient {
+public class GitHubRestClient {
     private static final String BASE_URL = "https://api.github.com";
     private static final UriTemplate ORG_URI_TPL = new UriTemplate(BASE_URL + "/orgs/{org}/members");
     private static final UriTemplate USER_URI_TPL = new UriTemplate(BASE_URL + "/users/{user}");
@@ -24,7 +27,7 @@ public class GitHubClient {
     private final RestTemplate restTemplate;
 
 
-    public GitHubClient(RestTemplateBuilder restTemplateBuilder) {
+    public GitHubRestClient(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
     }
 
@@ -40,7 +43,8 @@ public class GitHubClient {
         return Arrays.asList(restTemplate.getForObject(REPOS_URI_TPL.expand(userName), RepoDTO[].class));
     }
 
-    public List<LanguageDTO> getRepoLanguages(String userName, String repoName) throws JsonProcessingException {
+    @SneakyThrows
+    public List<LanguageDTO> getRepoLanguages(String userName, String repoName) {
         var jsonString = restTemplate.getForEntity(LANGS_URI_TPL.expand(userName, repoName), String.class);
 
         var languageJsonNodes = objectMapper.readTree(jsonString.getBody());

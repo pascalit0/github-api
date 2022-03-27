@@ -1,4 +1,4 @@
-package com.pascalito.github.githubapi.client;
+package com.pascalito.github.githubapi.client.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

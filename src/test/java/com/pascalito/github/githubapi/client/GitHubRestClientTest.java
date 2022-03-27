@@ -1,6 +1,7 @@
 package com.pascalito.github.githubapi.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,11 +9,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 // NOTE: Integration Test. Use only during development of REST-Client and disable after as contents change
+@Disabled
 @SpringBootTest
-class GitHubClientTest {
+class GitHubRestClientTest {
 
     @Autowired
-    GitHubClient cut;
+    GitHubRestClient cut;
 
 
     @Test
