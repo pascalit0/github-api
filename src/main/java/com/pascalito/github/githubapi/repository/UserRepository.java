@@ -19,4 +19,6 @@ public interface UserRepository extends CrudRepository<UserEntity, Long> {
     List<UserEntity> findByLanguage(@Param("lang") String language);
 
     Optional<UserEntity> findByName(String name);
+
+    List<UserEntity> findAll();
 }
