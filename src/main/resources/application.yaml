@@ -1,1 +1,9 @@
-
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:54321/github
+    username: github
+    password: github
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update

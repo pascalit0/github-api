@@ -1,0 +1,18 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "54321:5432"
+    expose:
+      - 5432
+    restart: always
+    environment:
+      POSTGRES_DB: github
+      POSTGRES_USER: github
+      POSTGRES_PASSWORD: github
+volumes:
+  db_data:
