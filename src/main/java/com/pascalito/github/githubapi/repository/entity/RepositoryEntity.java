@@ -24,6 +24,6 @@ public class RepositoryEntity {
     @ManyToOne
     private UserEntity user;
 
-    @OneToMany(mappedBy = "repository")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "repository", cascade = CascadeType.ALL)
     private List<LanguageEntity> languages;
 }

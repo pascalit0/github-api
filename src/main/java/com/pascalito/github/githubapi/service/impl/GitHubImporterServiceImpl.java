@@ -9,6 +9,7 @@ import com.pascalito.github.githubapi.repository.entity.UserEntity;
 import com.pascalito.github.githubapi.service.GitHubImporterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,21 +25,22 @@ public class GitHubImporterServiceImpl implements GitHubImporterService {
     private final UserRepository userRepository;
 
 
+    @Transactional
     @Override
     public void importUsersFromGitHub() {
         var users = gitHubRestClient.getOrganizationUsers(CODE_CENTRIC_ORGA);
         users.stream()
                 .map(this::buildUserEntity)
                 .forEach(userRepository::save);
-
-        System.out.println("sss");
     }
 
     private UserEntity buildUserEntity(UserDTO user) {
-        return UserEntity.builder()
+        var userEntity = UserEntity.builder()
                 .name(user.getLogin())
                 .repos(buildRepoEntities(user))
                 .build();
+        userEntity.getRepos().forEach(repositoryEntity -> repositoryEntity.setUser(userEntity));
+        return userEntity;
     }
 
     private List<RepositoryEntity> buildRepoEntities(UserDTO userDTO) {
@@ -49,10 +51,12 @@ public class GitHubImporterServiceImpl implements GitHubImporterService {
     }
 
     private RepositoryEntity buildRepoEntity(String userName, String repoName) {
-        return RepositoryEntity.builder()
-                .name(userName)
+        var repoEntity = RepositoryEntity.builder()
+                .name(repoName)
                 .languages(buildRepoLanguageEntities(userName, repoName))
                 .build();
+        repoEntity.getLanguages().forEach(languageEntity -> languageEntity.setRepository(repoEntity));
+        return repoEntity;
     }
 
     private List<LanguageEntity> buildRepoLanguageEntities(String userName, String repoName) {

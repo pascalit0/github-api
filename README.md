@@ -1,4 +1,6 @@
 # github-api
-2 Services: 
-* 1 to get data from github and store locally
-* 1 for making calculations
+2 Controller: 
+* 1 for initial data import from github: `localhost:8080/import`
+* 1 for getting data from local repository:
+  * `localhost:8080/userprojects`
+  * `localhost:8080/userprojects/lang/java`
